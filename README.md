@@ -1,1 +1,1 @@
-# clone-nodejitsu-node-http-proxy
+Clone [nodejitsu/node-http-proxy: A full-featured http proxy for node.js](https://github.com/nodejitsu/node-http-proxy) for study.
