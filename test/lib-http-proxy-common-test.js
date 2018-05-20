@@ -226,6 +226,25 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.path).to.eql('some-path/am')
     })
 
+    it('should properly detect https/wss protocol without the colon', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(
+        outgoing,
+        {
+          target: {
+            protocol: 'https',
+            host: 'whatever.com',
+          },
+        },
+        {
+          url: '/',
+        }
+      )
+
+      expect(outgoing.port).to.eql(443)
+    })
+
   })
 
 })
