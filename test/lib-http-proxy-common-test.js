@@ -411,6 +411,27 @@ describe('lib/http-proxy/common.js', () => {
         expect(outgoing.headers.host).to.eql('mycouch.com:6984')
       })
 
+      it('should correctly set the port to the host when it is a non-standard port when setting host and port manually (which ignores port)', () => {
+        let outgoing = {}
+
+        common.setupOutgoing(
+          outgoing,
+          {
+            target: {
+              protocol: 'https:',
+              host: 'mycouch.com',
+              port: 6984,
+            },
+            changeOrigin: true,
+          },
+          {
+            url: '/',
+          }
+        )
+
+        expect(outgoing.headers.host).to.eql('mycouch.com:6984')
+      })
+
     })
 
   })
