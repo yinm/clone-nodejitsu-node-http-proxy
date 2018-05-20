@@ -282,6 +282,24 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.path).to.eql('/forward/static/path')
     })
 
+    it('should not modify the query string', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(
+        outgoing,
+        {
+          target: {
+            path: '/forward',
+          },
+        },
+        {
+          url: '/?foo=bar//&target=http://foobar.com/?a=1%26b=2&other=2'
+        }
+      )
+
+      expect(outgoing.path).to.eql('/forward/?foo=bar//&target=http://foobar.com/?a=1%26b=2&other=2')
+    })
+
   })
 
 })
