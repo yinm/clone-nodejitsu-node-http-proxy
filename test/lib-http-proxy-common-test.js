@@ -300,6 +300,25 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.path).to.eql('/forward/?foo=bar//&target=http://foobar.com/?a=1%26b=2&other=2')
     })
 
+    // This is the proper failing test case for the common.join problem
+    it('should correctly format the toProxy URL', () => {
+      let outgoing = {}
+      const google = 'https://google.com'
+
+      common.setupOutgoing(
+        outgoing,
+        {
+          target: url.parse('http://sometarget.com:80'),
+          toProxy: true,
+        },
+        {
+          url: google,
+        }
+      )
+
+      expect(outgoing.path).to.eql(`/${google}`)
+    })
+
   })
 
 })
