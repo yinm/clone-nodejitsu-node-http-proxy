@@ -489,6 +489,25 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.method).eql('POST')
     })
 
+    // url.parse('').path => null
+    it('should not pass null as last arg to #urlJoin', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(
+        outgoing,
+        {
+          target: {
+            path: '',
+          },
+        },
+        {
+          url: '',
+        }
+      )
+
+      expect(outgoing.path).to.be('')
+    })
+
   })
 
 })
