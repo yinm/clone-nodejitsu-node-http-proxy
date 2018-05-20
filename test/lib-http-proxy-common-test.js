@@ -91,6 +91,31 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.headers.connection).to.eql('keep-alive, upgrade')
     })
 
+    it('should override agentless connection: contains improper upgrade', () => {
+      // sanity check on upgrade regex
+      let outgoing = {}
+
+      common.setupOutgoing(outgoing,
+        {
+          agent: undefined,
+          target: {
+            host: 'hey',
+            hostname: 'how',
+            socketPath: 'are',
+            port: 'you',
+          },
+          headers: {'connection': 'keep-alive, not upgrade'},
+        },
+        {
+          method: 'i',
+          url: 'am',
+          headers: {'pro': 'xy', 'overwritten': false},
+        }
+      )
+
+      expect(outgoing.headers.connection).to.eql('close')
+    })
+
   })
 
 })
