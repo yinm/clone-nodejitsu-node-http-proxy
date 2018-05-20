@@ -140,6 +140,21 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.headers.connection).to.eql('close')
     })
 
+    it('should set the agent to false if none is given', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(outgoing,
+        {
+          target: 'http://localhost',
+        },
+        {
+          url: '/',
+        },
+      )
+
+      expect(outgoing.agent).to.eql(false)
+    })
+
   })
 
 })
