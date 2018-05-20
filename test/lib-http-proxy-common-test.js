@@ -373,6 +373,26 @@ describe('lib/http-proxy/common.js', () => {
 
         expect(outgoing.path).to.eql('/some/crazy/path/who')
       })
+
+      it('and prependPath: false, it should ignore path of target and incoming request', () => {
+        let outgoing = {}
+        const myEndpoint = 'https://whatever.com/some/crazy/path/who'
+
+        common.setupOutgoing(
+          outgoing,
+          {
+            target: url.parse(myEndpoint),
+            ignorePath: true,
+            prependPath: false,
+          },
+          {
+            url: '/more/crazy/pathness',
+          }
+        )
+
+        expect(outgoing.path).to.eql('')
+      })
+
     })
 
   })
