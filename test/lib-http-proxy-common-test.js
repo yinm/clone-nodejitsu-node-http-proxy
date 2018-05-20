@@ -67,6 +67,30 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.headers.connection).to.eql('upgrade')
     })
 
+    it('should not override agentless connection: contains upgrade', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(outgoing,
+        {
+          agent: undefined,
+          target: {
+            host: 'hey',
+            hostname: 'how',
+            socketPath: 'are',
+            port: 'you',
+          },
+          headers: {'connection': 'keep-alive, upgrade'}, // this is what Firefox sets
+        },
+        {
+          method: 'i',
+          url: 'am',
+          headers: {'pro': 'xy', 'overwritten': false},
+        }
+      )
+
+      expect(outgoing.headers.connection).to.eql('keep-alive, upgrade')
+    })
+
   })
 
 })
