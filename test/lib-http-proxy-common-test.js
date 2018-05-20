@@ -435,6 +435,41 @@ describe('lib/http-proxy/common.js', () => {
       })
     })
 
+    it('should pass through https client parameters', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(
+        outgoing,
+        {
+          agent: '?',
+          target: {
+            host: 'how',
+            hostname: 'are',
+            socketPath: 'you',
+            protocol: 'https:',
+            pfx: 'my-pfx',
+            key: 'my-key',
+            passphrase: 'my-passphrase',
+            cert: 'my-cert',
+            ca: 'my-ca',
+            ciphers: 'my-ciphers',
+            secureProtocol: 'my-secure-protocol',
+          },
+        },
+        {
+          method: 'i',
+          url: 'am',
+        }
+      )
+
+      expect(outgoing.pfx).eql('my-pfx')
+      expect(outgoing.key).eql('my-key')
+      expect(outgoing.passphrase).eql('my-passphrase')
+      expect(outgoing.cert).eql('my-cert')
+      expect(outgoing.ca).eql('my-ca')
+      expect(outgoing.ciphers).eql('my-ciphers')
+      expect(outgoing.secureProtocol).eql('my-secure-protocol')
+    })
 
   })
 
