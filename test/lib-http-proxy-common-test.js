@@ -507,7 +507,33 @@ describe('lib/http-proxy/common.js', () => {
 
       expect(outgoing.path).to.be('')
     })
+  })
 
+  describe('#setupSocket', () => {
+    it('should setup a socket', () => {
+      let socketConfig = {
+        timeout: null,
+        nodelay: false,
+        keepalive: false,
+      }
+
+      const stubSocket = {
+        setTimeout(num) {
+          socketConfig.timeout = num
+        },
+        setNoDelay(bol) {
+          socketConfig.nodelay = bol
+        },
+        setKeepAlive(bol) {
+          socketConfig.keepalive = bol
+        }
+      }
+      const returnValue = common.setupSocket(stubSocket)
+
+      expect(socketConfig.timeout).to.eql(0)
+      expect(socketConfig.nodelay).to.eql(true)
+      expect(socketConfig.keepalive).to.eql(true)
+    })
   })
 
 })
