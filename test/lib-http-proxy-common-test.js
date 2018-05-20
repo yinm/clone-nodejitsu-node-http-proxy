@@ -155,6 +155,39 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.agent).to.eql(false)
     })
 
+    it('set the port according to the protocol', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(
+        outgoing,
+        {
+          agent: '?',
+          target: {
+            host: 'how',
+            hostname: 'are',
+            socketPath: 'you',
+            protocol: 'https',
+          },
+        },
+        {
+          method: 'i',
+          url: 'am',
+          headers: {pro: 'xy'},
+        }
+      )
+
+      expect(outgoing.host).to.eql('how')
+      expect(outgoing.hostname).to.eql('are')
+      expect(outgoing.socketPath).to.eql('you')
+      expect(outgoing.agent).to.eql('?')
+
+      expect(outgoing.method).to.eql('i')
+      expect(outgoing.path).to.eql('am')
+      expect(outgoing.headers.pro).to.eql('xy')
+
+      expect(outgoing.port).to.eql(443)
+    })
+
   })
 
 })
