@@ -206,6 +206,26 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.path).to.eql('some-path/am')
     })
 
+    it('should keep the original forward path in the outgoing path', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(
+        outgoing,
+        {
+          target: {},
+          forward: {
+            path: 'some-path',
+          },
+        },
+        {
+          url: 'am',
+        },
+        'forward'
+      )
+
+      expect(outgoing.path).to.eql('some-path/am')
+    })
+
   })
 
 })
