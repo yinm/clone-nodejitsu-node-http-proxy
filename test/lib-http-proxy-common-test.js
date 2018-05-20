@@ -355,6 +355,26 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.path).to.eql(`/${google}`)
     })
 
+    describe('when using ignorePath', () => {
+      it('should ignore the path of the `req.url` passed in but use the target path', () => {
+        let outgoing = {}
+        const myEndpoint = 'https://whatever.com/some/crazy/path/who'
+
+        common.setupOutgoing(
+          outgoing,
+          {
+            target: url.parse(myEndpoint),
+            ignorePath: true
+          },
+          {
+            url: '/more/crazy/pathness',
+          }
+        )
+
+        expect(outgoing.path).to.eql('/some/crazy/path/who')
+      })
+    })
+
   })
 
 })
