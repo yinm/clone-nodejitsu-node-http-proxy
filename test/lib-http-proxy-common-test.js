@@ -319,6 +319,24 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.path).to.eql(`/${google}`)
     })
 
+    it('should not replace :\ to :\\ when no https word before', () => {
+      let outgoing = {}
+      const google = 'https://google.com/join/join.js'
+
+      common.setupOutgoing(
+        outgoing,
+        {
+          target: url.parse('http://sometarget.com:80'),
+          toProxy: true,
+        },
+        {
+          url: google,
+        }
+      )
+
+      expect(outgoing.path).to.eql(`/${google}`)
+    })
+
   })
 
 })
