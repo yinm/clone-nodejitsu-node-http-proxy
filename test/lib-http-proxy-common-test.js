@@ -245,6 +245,25 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.port).to.eql(443)
     })
 
+    it('should not prepend the target path to the outgoing path with prependPath = false', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(
+        outgoing,
+        {
+          target: {
+            path: 'hellothere',
+          },
+          prependPath: false,
+        },
+        {
+          url: 'hi',
+        }
+      )
+
+      expect(outgoing.path).to.eql('hi')
+    })
+
   })
 
 })
