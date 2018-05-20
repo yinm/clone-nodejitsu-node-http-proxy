@@ -393,6 +393,24 @@ describe('lib/http-proxy/common.js', () => {
         expect(outgoing.path).to.eql('')
       })
 
+      it('should correctly set the port to the host when it is a non-standard port using url.parse', () => {
+        let outgoing = {}
+        const myEndpoint = 'https://myCouch.com:6984'
+
+        common.setupOutgoing(
+          outgoing,
+          {
+            target: url.parse(myEndpoint),
+            changeOrigin: true,
+          },
+          {
+            url: '/',
+          }
+        )
+
+        expect(outgoing.headers.host).to.eql('mycouch.com:6984')
+      })
+
     })
 
   })
