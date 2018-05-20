@@ -116,6 +116,30 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.headers.connection).to.eql('close')
     })
 
+    it('should override agentless non-upgrade header to close', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(outgoing,
+        {
+          agent: undefined,
+          target: {
+            host: 'hey',
+            hostname: 'how',
+            socketPath: 'are',
+            port: 'you',
+          },
+          headers: {'connection': 'xyz'},
+        },
+        {
+          method: 'i',
+          url: 'am',
+          headers: {'pro': 'xy', 'overwritten': false},
+        }
+      )
+
+      expect(outgoing.headers.connection).to.eql('close')
+    })
+
   })
 
 })
