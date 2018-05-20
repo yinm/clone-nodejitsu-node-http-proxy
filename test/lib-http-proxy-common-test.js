@@ -42,6 +42,31 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.localAddress).to.eql('local.address')
       expect(outgoing.auth).to.eql('username:pass')
     })
+
+    it('should not override agentless upgrade header', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(outgoing,
+        {
+          agent: undefined,
+          target: {
+            host: 'hey',
+            hostname: 'how',
+            socketPath: 'are',
+            port: 'you',
+          },
+          headers: {'connection': 'upgrade'},
+        },
+        {
+          method: 'i',
+          url: 'am',
+          headers: {'pro': 'xy', 'overwritten': false},
+        }
+      )
+
+      expect(outgoing.headers.connection).to.eql('upgrade')
+    })
+
   })
 
 })
