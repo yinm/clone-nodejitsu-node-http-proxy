@@ -471,6 +471,24 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.secureProtocol).eql('my-secure-protocol')
     })
 
+    it('should handle overriding the `method` of the http request', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(
+        outgoing,
+        {
+          target: url.parse('https://who.com'),
+          method: 'POST',
+        },
+        {
+          method: 'GET',
+          url: '',
+        }
+      )
+
+      expect(outgoing.method).eql('POST')
+    })
+
   })
 
 })
