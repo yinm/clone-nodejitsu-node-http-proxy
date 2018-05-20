@@ -392,7 +392,9 @@ describe('lib/http-proxy/common.js', () => {
 
         expect(outgoing.path).to.eql('')
       })
+    })
 
+    describe('when using changeOrigin', () => {
       it('should correctly set the port to the host when it is a non-standard port using url.parse', () => {
         let outgoing = {}
         const myEndpoint = 'https://myCouch.com:6984'
@@ -431,8 +433,8 @@ describe('lib/http-proxy/common.js', () => {
 
         expect(outgoing.headers.host).to.eql('mycouch.com:6984')
       })
-
     })
+
 
   })
 
