@@ -264,6 +264,24 @@ describe('lib/http-proxy/common.js', () => {
       expect(outgoing.path).to.eql('hi')
     })
 
+    it('should properly join paths', () => {
+      let outgoing = {}
+
+      common.setupOutgoing(
+        outgoing,
+        {
+          target: {
+            path: '/forward',
+          },
+        },
+        {
+          url: '/static/path',
+        }
+      )
+
+      expect(outgoing.path).to.eql('/forward/static/path')
+    })
+
   })
 
 })
