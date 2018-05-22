@@ -39,6 +39,12 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
         expect(this.proxyRes.headers.location).to.eql('http://backend.com/')
       })
 
+      it('not when hostRewrite is unset', function() {
+        delete this.options.hostRewrite
+        httpProxy.setRedirectHostRewrite(this.req, {}, this.proxyRes, this.options)
+        expect(this.proxyRes.headers.location).to.eql('http://backend.com/')
+      })
+
     })
 
   })
