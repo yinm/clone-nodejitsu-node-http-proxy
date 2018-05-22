@@ -58,6 +58,12 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
         expect(this.proxyRes.headers.location).to.eql('http://some-other/')
       })
 
+      it('not when the redirected location does not match target port', function() {
+        this.proxyRes.statusCode = 302
+        this.proxyRes.headers.location = 'http://backend.com:8080/'
+        httpProxy.setRedirectHostRewrite(this.req, {}, this.proxyRes, this.options)
+        expect(this.proxyRes.headers.location).to.eql('http://backend.com:8080/')
+      })
     })
 
   })
