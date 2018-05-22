@@ -66,6 +66,22 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
       })
     })
 
+    context('rewrites location host with autoRewrite', function() {
+      beforeEach(function() {
+        this.options.autoRewrite = true
+      });
+
+      [201, 301, 302, 307, 308].forEach(function(code) {
+        it(`on ${code}`, function() {
+          this.proxyRes.statusCode = code
+          httpProxy.setRedirectHostRewrite(this.req, {}, this.proxyRes, this.options)
+          expect(this.proxyRes.headers.location).to.eql('http://ext-auto.com/')
+        })
+      })
+
+
+    })
+
   })
 
 })
