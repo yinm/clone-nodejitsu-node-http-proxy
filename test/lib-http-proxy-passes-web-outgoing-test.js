@@ -45,6 +45,12 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
         expect(this.proxyRes.headers.location).to.eql('http://backend.com/')
       })
 
+      it('takes precedence over autoRewrite', function() {
+        this.options.autoRewrite = true
+        httpProxy.setRedirectHostRewrite(this.req, {}, this.proxyRes, this.options)
+        expect(this.proxyRes.headers.location).to.eql('http://ext-manual.com/')
+      })
+
     })
 
   })
