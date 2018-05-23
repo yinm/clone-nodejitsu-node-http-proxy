@@ -145,4 +145,19 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
     })
   })
 
+  describe('#setConnection', function() {
+    it('set the right connection with 1.0 - `close`', function() {
+      let proxyRes = { headers: {} }
+      httpProxy.setConnection({
+        httpVersion: '1.0',
+        headers: {
+          connection: null,
+        }
+      }, {}, proxyRes)
+
+      expect(proxyRes.headers.connection).to.eql('close')
+    })
+
+  })
+
 })
