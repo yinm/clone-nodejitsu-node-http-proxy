@@ -137,8 +137,12 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
         expect(this.proxyRes.headers.location).to.eql('https://ext-manual.com/')
       })
 
+      it('works together with autoRewrite', function() {
+        this.options.autoRewrite = true
+        httpProxy.setRedirectHostRewrite(this.req, {}, this.proxyRes, this.options)
+        expect(this.proxyRes.headers.location).to.eql('https://ext-auto.com/')
+      })
     })
-
   })
 
 })
