@@ -227,6 +227,58 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
 
       httpProxy.writeStatusCode({}, res, { statusCode: 200 })
     })
+  })
+
+  describe('#writeHeaders', function() {
+    beforeEach(function() {
+      this.proxyRes = {
+        headers: {
+          hey: 'hello',
+          how: 'are you?',
+          'set-cookie': [
+            'hello; domain=my.domain; path=/',
+            'there; domain=my.domain; path=/',
+          ]
+        }
+      }
+
+      this.rawProxyRes = {
+        headers: {
+          hey: 'hello',
+          how: 'are you?',
+          'set-cookie': [
+            'hello; domain=my.domain; path=/',
+            'there; domain=my.domain; path=/',
+          ]
+        },
+        rawHeaders: [
+          'Hey', 'hello',
+          'How', 'are you?',
+          'Set-Cookie', 'hello; domain=my.domain; path=/',
+          'Set-Cookie', 'there; domain=my.domain; path=/',
+        ]
+      }
+
+      this.res = {
+        setHeader(k, v) {
+          // Header names are lower-cased
+          this.headers[k.toLowerCase()] = v
+        },
+        headers: {},
+      }
+    })
+
+    it('writes headers', function() {
+      let options = {}
+      httpProxy.writeHeaders({}, this.res, this.proxyRes, options)
+
+      expect(this.res.headers.hey).to.eql('hello')
+      expect(this.res.headers.how).to.eql('are you?')
+
+      expect(this.res.headers).to.have.key('set-cookie')
+      expect(this.res.headers['set-cookie']).to.be.an(Array)
+      expect(this.res.headers['set-cookie']).to.have.length(2)
+    })
 
   })
 
