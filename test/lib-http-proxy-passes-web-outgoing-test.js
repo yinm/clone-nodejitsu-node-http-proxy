@@ -182,6 +182,18 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
       expect(proxyRes.headers.connection).to.eql('hola')
     })
 
+    it('set the right connection - `keep-alive`', function() {
+      let proxyRes = { headers: {} }
+      httpProxy.setConnection({
+        httpVersion: null,
+        headers: {
+          connection: null,
+        },
+      }, {}, proxyRes)
+
+      expect(proxyRes.headers.connection).to.eql('keep-alive')
+    })
+
   })
 
 })
