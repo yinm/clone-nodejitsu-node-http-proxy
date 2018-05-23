@@ -217,4 +217,17 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
     })
   })
 
+  describe('#writeStatusCode', function() {
+    it('should write status code', function() {
+      let res = {
+        writeHead(n) {
+          expect(n).to.eql(200)
+        }
+      }
+
+      httpProxy.writeStatusCode({}, res, { statusCode: 200 })
+    })
+
+  })
+
 })
