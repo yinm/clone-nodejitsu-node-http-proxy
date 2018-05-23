@@ -104,6 +104,20 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
         httpProxy.setRedirectHostRewrite(this.req, {}, this.proxyRes, this.options)
         expect(this.proxyRes.headers.location).to.eql('http://backend.com:8080/')
       })
+    })
+
+    context('rewrites location protocol with protocolRewrite', function() {
+      beforeEach(function() {
+        this.options.protocolRewrite = 'https'
+      });
+
+      [201, 301, 302, 307, 308].forEach(function(code) {
+        it(`on ${code}`, function() {
+          this.proxyRes.statusCode = code
+          httpProxy.setRedirectHostRewrite(this.req, {}, this.proxyRes, this.options)
+          expect(this.proxyRes.headers.location).to.eql('https://backend.com/')
+        })
+      })
 
     })
 
