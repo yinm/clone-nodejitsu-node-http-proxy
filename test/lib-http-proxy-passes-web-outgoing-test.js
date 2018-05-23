@@ -194,6 +194,15 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
       expect(proxyRes.headers.connection).to.eql('keep-alive')
     })
 
+    it("don't set connection with 2.0 if doesn't exist", function() {
+      let proxyRes = { headers: {} }
+      httpProxy.setConnection({
+        httpVersion: '2.0',
+        headers: {},
+      }, {}, proxyRes )
+
+      expect(proxyRes.headers.connection).to.eql(undefined)
+    })
   })
 
 })
