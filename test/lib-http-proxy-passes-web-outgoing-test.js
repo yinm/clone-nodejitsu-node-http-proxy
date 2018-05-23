@@ -158,6 +158,18 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
       expect(proxyRes.headers.connection).to.eql('close')
     })
 
+    it('set the right connection with 1.0 - req.connection', function() {
+      let proxyRes = { headers: {} }
+      httpProxy.setConnection({
+        httpVersion: '1.0',
+        headers: {
+          connection: 'hey',
+        },
+      }, {}, proxyRes)
+
+      expect(proxyRes.headers.connection).to.eql('hey')
+    })
+
   })
 
 })
