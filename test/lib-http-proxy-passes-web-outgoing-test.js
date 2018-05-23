@@ -119,6 +119,12 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
         })
       })
 
+      it('not on 200', function() {
+        this.proxyRes.statusCode = 200
+        httpProxy.setRedirectHostRewrite(this.req, {}, this.proxyRes, this.options)
+        expect(this.proxyRes.headers.location).to.eql('http://backend.com/')
+      })
+
     })
 
   })
