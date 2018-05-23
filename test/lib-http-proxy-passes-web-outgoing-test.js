@@ -131,6 +131,12 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
         expect(this.proxyRes.headers.location).to.eql('http://backend.com/')
       })
 
+      it('works together with httpRewrite', function() {
+        this.options.hostRewrite = 'ext-manual.com'
+        httpProxy.setRedirectHostRewrite(this.req, {}, this.proxyRes, this.options)
+        expect(this.proxyRes.headers.location).to.eql('https://ext-manual.com/')
+      })
+
     })
 
   })
