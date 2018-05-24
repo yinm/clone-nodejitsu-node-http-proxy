@@ -332,6 +332,17 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
         .to.contain('hello; domain=my.domain; path=/')
     })
 
+    it('rewrites domain', function() {
+      let options = {
+        cookieDomainRewrite: 'my.new.domain',
+      }
+
+      httpProxy.writeHeaders({}, this.res, this.proxyRes, options)
+
+      expect(this.res.headers['set-cookie'])
+        .to.contain('hello; domain=my.new.domain; path=/')
+    })
+
   })
 
 })
