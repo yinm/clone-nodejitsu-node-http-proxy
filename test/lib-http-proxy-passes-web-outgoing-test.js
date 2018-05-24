@@ -280,6 +280,18 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
       expect(this.res.headers['set-cookie']).to.have.length(2)
     })
 
+    it('writes raw headers', function() {
+      let options = {}
+      httpProxy.writeHeaders({}, this.res, this.rawProxyRes, options)
+
+      expect(this.res.headers.hey).to.eql('hello')
+      expect(this.res.headers.how).to.eql('are you?')
+
+      expect(this.res.headers).to.have.key('set-cookie')
+      expect(this.res.headers['set-cookie']).to.be.an(Array)
+      expect(this.res.headers['set-cookie']).to.have.length(2)
+    })
+
   })
 
 })
