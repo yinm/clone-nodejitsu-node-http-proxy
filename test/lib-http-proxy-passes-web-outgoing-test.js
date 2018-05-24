@@ -410,7 +410,16 @@ describe('lib/http-proxy/passes/web-outgoing.js', () => {
       expect(this.res.headers['set-cookie'])
         .to.contain('hello-on-my.special.domain; domain=my.special.domain; path=/')
     })
-
   })
 
+  describe('#removeChunked', function() {
+    let proxyRes = {
+      headers: {
+        'transfer-encoding': 'hello',
+      }
+    }
+
+    httpProxy.removeChunked({ httpVersion: '1.0' }, {}, proxyRes)
+    expect(proxyRes.headers['transfer-encoding']).to.eql(undefined)
+  })
 })
