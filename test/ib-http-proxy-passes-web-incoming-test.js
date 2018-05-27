@@ -17,6 +17,16 @@ describe('lib/http-proxy/passes/web.js', () => {
       expect(stubRequest.headers['content-length']).to.eql('0')
     })
 
+    it('should change `content-length` for OPTIONS requests', () => {
+      let stubRequest = {
+        method: 'OPTIONS',
+        headers: {},
+      }
+
+      webPasses.deleteLength(stubRequest, {}, {})
+      expect(stubRequest.headers['content-length']).to.eql('0')
+    })
+
     it('should change `transfer-encoding` from empty DELETE requests', () => {
       let stubRequest = {
         method: 'DELETE',
@@ -29,7 +39,6 @@ describe('lib/http-proxy/passes/web.js', () => {
       expect(stubRequest.headers['content-length']).to.eql('0')
       expect(stubRequest.headers).to.not.have.key('transfer-encoding')
     })
-
   })
 
 })
