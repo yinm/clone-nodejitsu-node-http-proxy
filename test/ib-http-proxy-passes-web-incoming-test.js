@@ -130,4 +130,29 @@ describe('#createProxyServer.web() using own http server', () => {
     http.request('http://127.0.0.1:8081', () => {}).end()
   })
 
+  it('should proxy the request and handle error via callback', (done) => {
+    const proxy = httpProxy.createProxyServer({
+      target: 'http://127.0.0.1:8080'
+    })
+
+    const proxyServer = http.createServer(requestHandler)
+
+    function requestHandler(req, res) {
+      proxy.web(req, res, (err) => {
+        proxyServer.close()
+        expect(err).to.be.an(Error)
+        expect(err.code).to.be('ECONNREFUSED')
+        done()
+      })
+    }
+
+    proxyServer.listen('8082')
+
+    http.request({
+      hostname: '127.0.0.1',
+      port: '8082',
+      method: 'GET',
+    }, () => {}).end()
+  })
+
 })
