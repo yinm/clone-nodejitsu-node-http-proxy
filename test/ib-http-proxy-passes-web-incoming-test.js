@@ -74,5 +74,32 @@ describe('lib/http-proxy/passes/web.js', () => {
       expect(stubRequest.headers['x-forwarded-proto']).to.be('http')
     })
   })
+})
+
+describe('#createProxyServer.web() using own http server', () => {
+  it('should proxy the request using the web proxy handler', (done) => {
+    let proxy = httpProxy.createProxyServer({
+      target: 'http://127.0.0.1:8080'
+    })
+
+    function requestHandler(req, res) {
+      proxy.web(req, res)
+    }
+
+    const proxyServer = http.createServer(requestHandler)
+
+    const source = http.createServer(function(req, res) {
+      source.close()
+      proxyServer.close()
+      expect(req.method).to.eql('GET')
+      expect(req.headers.host.split(':')[1]).to.eql('8081')
+      done()
+    })
+
+    proxyServer.listen('8081')
+    source.listen('8080')
+
+    http.request('http://127.0.0.1:8081', function() {}).end()
+  })
 
 })
