@@ -41,4 +41,19 @@ describe('lib/http-proxy/passes/web.js', () => {
     })
   })
 
+  describe('#timeout', () => {
+    it('should set timeout on the socket', () => {
+      let
+        done = false,
+        stubRequest = {
+          socket: {
+            setTimeout(value) { done = value }
+          }
+        }
+
+      webPasses.timeout(stubRequest, {}, { timeout: 5000 })
+      expect(done).to.eql(5000)
+    })
+  })
+
 })
